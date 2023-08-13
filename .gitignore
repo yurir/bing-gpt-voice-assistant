@@ -1,4 +1,6 @@
-cookies.json
-response.mp3
+.idea
+.venv
 audio.wav
 audio_prompt.wav
+cookies.json
+response.mp3

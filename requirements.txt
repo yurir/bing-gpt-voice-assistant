@@ -1,7 +1,12 @@
-boto3==1.26.114
-EdgeGPT==0.1.23
-openai==0.27.4
+boto3==1.28.20
+EdgeGPT==0.13.2
+openai==0.27.8
 openai_whisper==20230314
 pydub==0.25.1
 SpeechRecognition==3.10.0
 PyAudio==0.2.13
+whisper==1.1.10
+gTTS==2.3.2
+pafy==0.5.5
+python-vlc==3.0.18122
+python-dotenv==1.0.0
