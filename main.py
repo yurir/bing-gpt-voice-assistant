@@ -21,16 +21,13 @@ from pydub import playback
 import webbrowser
 import requests
 from dotenv import load_dotenv
+from youtubesearchpython import VideosSearch
 
 dotenv_path = os.path.join(os.path.dirname(__file__), ".env")
 load_dotenv(dotenv_path)
 
-# import vlc
-# import pafy
-
 log = logging.getLogger("app")
 log.setLevel(logging.DEBUG)
-# log.addHandler(logging.StreamHandler(sys.stdout))
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
     level=logging.INFO,
@@ -88,7 +85,7 @@ def has_hebrew(text):
 
 
 def has_language_neutral(text):
-    return any(not c.isalnum() for c in text)
+    return not has_hebrew(text) and not has_cyrillic(text) and not has_english(text)
 
 
 def detect_language(text):
@@ -249,12 +246,16 @@ async def main():
                 # Select only the bot response from the response dictionary
                 youtube_url = get_first_youtube_result(response["item"]["messages"])
                 if youtube_url is not None:
+                    log.info(f"Got youtube video: {youtube_url}")
+                    # often we get urls that are no longer available, so let's bring smth from youtube itself
+                    video_search = VideosSearch(user_input, limit=1)
+                    youtube_url = video_search.result()['result'][0]['link']
                     log.info(f"Playing youtube video: {youtube_url}")
-                    synthesize_speech(youtube_url['text'], 'response.mp3')
+                    synthesize_speech(video_search.result()['result'][0]['title'], 'response.mp3')
                     play_audio('response.mp3')
                     await bot.close()
-                    log.info(f"Playing youtube video: {youtube_url['url']}")
-                    play_youtube_video(youtube_url['url'])
+                    log.info(f"Playing youtube video: {youtube_url}")
+                    play_youtube_video(youtube_url)
                     continue
                 for message in response["item"]["messages"]:
                     log.info(message)

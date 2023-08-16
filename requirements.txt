@@ -7,6 +7,5 @@ SpeechRecognition==3.10.0
 PyAudio==0.2.13
 whisper==1.1.10
 gTTS==2.3.2
-pafy==0.5.5
-python-vlc==3.0.18122
 python-dotenv==1.0.0
+youtube-search-python==1.6.6
